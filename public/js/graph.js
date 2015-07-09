@@ -204,14 +204,18 @@ Graph.prototype._create_axis = function(scale, orientation, height, text_anchor,
   var formatter = function(val) {
     var suffixes = {
       amino_acid:   'aa',
-      nucleic_acid: 'b'
+      nucleic_acid: 'bp'
     };
-    return scinotation_formatter(val) + suffixes[seq_type];
+    var d_formatter = d3.format('.3s');
+    // return scinotation_formatter(val) + suffixes[seq_type];
+    return d_formatter(val) + " " + suffixes[seq_type];
   }
-
+  var tvalues = scale.ticks();
+  tvalues.pop();
   var axis = d3.svg.axis()
                .ticks(this._axis_ticks)
                .scale(scale)
+               .tickValues(tvalues.concat(scale.domain()))
                .tickFormat(formatter)
                .orient(orientation);
 
@@ -512,10 +516,10 @@ Graph.prototype._create_scales = function() {
   }
 
   var query_scale = d3.scale.linear()
-                         .domain([0, this._query_length])
+                         .domain([1, this._query_length])
                          .range(query_range);
   var subject_scale = d3.scale.linear()
-                         .domain([0, this._subject_length])
+                         .domain([1, this._subject_length])
                          .range(subject_range);
   query_scale.original_domain = query_scale.domain();
   subject_scale.original_domain = subject_scale.domain();
