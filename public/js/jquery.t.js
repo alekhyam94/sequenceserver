@@ -217,6 +217,23 @@
             var height = hits.length * (options.barHeight + options.barPadding) +
                 5 * options.margin + options.legend * 3;
 
+            var SEQ_TYPES = {
+                blastn: 'nucleic_acid',
+                blastp: 'amino_acid',
+                blastx: 'nucleic_acid',
+                tblastx: 'nucleic_acid',
+                tblastn: 'amino_acid'
+            };
+
+            var formatter = function(val) {
+                var algorithm = $queryDiv.data().algorithm;
+                var suffixes = {
+                  amino_acid:   'aa',
+                  nucleic_acid: 'bp'
+                };
+                return val + " " + suffixes[SEQ_TYPES[algorithm]];
+            };
+
             var svg = d3.select($graphDiv[0])
                 .selectAll('svg')
                 .data([hits])
@@ -240,7 +257,8 @@
                 .axis()
                 .scale(x)
                 .orient('top')
-                .tickValues(_tValues.concat([1, queryLen]));
+                .tickValues(_tValues.concat([1, queryLen]))
+                .tickFormat(formatter);
 
             // Attach the axis to DOM (<svg> element)
             svg.append('g')
