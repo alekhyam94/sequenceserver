@@ -221,7 +221,7 @@ Graph.prototype._create_axis = function(scale, orientation, height, text_anchor,
 
   var container = this._svg.d3.append('g')
      .attr('class', 'axis')
-     .attr('transform', 'translate(0,' + height + ')')
+     .attr('transform', 'translate(0,' + (height - 5) + ')')
      .call(axis);
   this._rotate_axis_labels(container.selectAll('text'), text_anchor, dx, dy);
 
@@ -298,10 +298,10 @@ Graph.prototype._render_polygons = function() {
        }
 
        var points = [
-         [query_x_points[0],   self._scales.query.height   + 2],
-         [subject_x_points[0], self._scales.subject.height - 1],
-         [subject_x_points[1], self._scales.subject.height - 1],
-         [query_x_points[1],   self._scales.query.height   + 2],
+         [query_x_points[0],   self._scales.query.height   + 2 - 5],
+         [subject_x_points[0], self._scales.subject.height - 1 - 5],
+         [subject_x_points[1], self._scales.subject.height - 1 - 5],
+         [query_x_points[1],   self._scales.query.height   + 2 - 5],
        ];
 
        return points.map(function(point) {
@@ -414,9 +414,9 @@ Graph.prototype._label_axis = function(type, axis) {
   var padding = 1;
 
   if(type === 'query') {
-    var y = 12;
+    var y = 7;
   } else if(type === 'subject') {
-    var y = this._svg.d3.attr('height') - 5;
+    var y = this._svg.d3.attr('height') - 0;
   } else {
     throw 'Unknown axis type: ' + type;
   }
@@ -445,8 +445,8 @@ Graph.prototype._label_axis = function(type, axis) {
     }, false);
 
     if(does_label_overlap_ticks) {
-      self._axis_label_visibility[type] = 'hidden';
-      label.style('visibility', 'hidden');
+      //self._axis_label_visibility[type] = 'hidden';
+      //label.style('visibility', 'hidden');
     } else {
       self._axis_label_visibility[type] = 'visible';
     }
