@@ -242,7 +242,7 @@
                     .attr('width', width)
                     .attr('height', height)
                 .append('g')
-                    .attr('transform', 'translate(' + options.margin / 4 + ', ' + options.margin / 4 + ')');
+                    .attr('transform', 'translate(' + options.margin / 4 + ', ' + (options.margin / 4 + 20) + ')');
 
             var x = d3.scale
                 .linear()
@@ -261,11 +261,17 @@
                 .tickFormat(formatter);
 
             // Attach the axis to DOM (<svg> element)
-            svg.append('g')
+            var container = svg.append('g')
                 .attr('transform', 'translate(0, ' + options.margin + ')')
                 .append('g')
                     .attr('class', 'x axis')
                     .call(xAxis);
+
+            // Vertical alignment of ticks
+            container.selectAll('text')
+                    .attr('x','25px')
+                    .attr('y','2px')
+                    .attr('transform','rotate(-90)');
 
             var y = d3.scale
                 .ordinal()
